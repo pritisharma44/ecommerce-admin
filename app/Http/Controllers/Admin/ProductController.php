@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage; 
+use App\Models\ProductVariant;
 
 class ProductController extends Controller
 {
@@ -23,6 +24,7 @@ class ProductController extends Controller
                     return '
                         <a href="/admin/products/'.$row->id.'/edit" class="mdi mdi-pencil" title="Edit"></a>
                         <a href="/admin/products/' . $row->id . '" class="mdi mdi-delete" id="deleteProduct" title="Delete" data-id="' . $row->id . '"></a>
+                        <a href="/admin/product/'.$row->id.'/variants" class="mdi mdi-pencil" title="Add Color Images"></a>
                     ';
                 })
                 
@@ -135,5 +137,39 @@ class ProductController extends Controller
         }
        
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+    }
+    public function variants($id)
+    {
+        $productVariants = ProductVariant::where('product_id', $id)->get();
+        return view('admin.products.variants', compact('productVariants', 'id'));
+    }
+    public function variantsStore(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'color' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sizes' => 'required|array',
+            'sizes.*' => 'string|in:S,M,L,XL,XXL',
+        ]);
+
+        try {
+            $product = Product::findOrFail($id);
+
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('product_variants', 'public');
+            }
+
+            ProductVariant::create([
+                'product_id' => $product->id,
+                'color' => $validatedData['color'],
+                'sizes' => $validatedData['sizes'],
+                'image' => $imagePath,
+            ]);
+
+            return redirect()->route('product.variants', $id)->with('success', 'Product variant added successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to add product variant: ' . $e->getMessage());
+        }
     }
 }
