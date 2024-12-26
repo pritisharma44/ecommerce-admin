@@ -12,15 +12,10 @@ class WebProductController extends Controller
     public function getProducts(Request $request)
     {
         try {
-            $products = Product::with('variants')->get();
+            $products = Product::get();
             foreach ($products as $product) {
                 if ($product->image) {
                     $product->image = url(Storage::url($product->image)); 
-                }
-                foreach ($product->variants as $variant) {
-                    if ($variant->image) {
-                        $variant->image = url(Storage::url($variant->image)); 
-                    }
                 }
             }
             if ($products->isNotEmpty()) {
