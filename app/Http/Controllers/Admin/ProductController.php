@@ -24,7 +24,7 @@ class ProductController extends Controller
                     return '
                         <a href="/admin/products/'.$row->id.'/edit" class="mdi mdi-pencil" title="Edit"></a>
                         <a href="/admin/products/' . $row->id . '" class="mdi mdi-delete" id="deleteProduct" title="Delete" data-id="' . $row->id . '"></a>
-                        <a href="/admin/product/'.$row->id.'/variants" class="mdi mdi-pencil" title="Add Color Images"></a>
+                        <a href="/admin/products/'.$row->id.'/variants" class="mdi mdi-pencil" title="Add Color Images"></a>
                     ';
                 })
                 

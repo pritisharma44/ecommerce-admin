@@ -24,7 +24,7 @@ Route::prefix('admin')->group(function () {
         Route::get('dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
         Route::resource('products', ProductController::class);
-        Route::get('product/{id}/variants', [ProductController::class, 'variants'])->name('product.variants');
+        Route::get('products/{id}/variants', [ProductController::class, 'variants'])->name('product.variants');
         Route::post('product/{id}/variants', [ProductController::class, 'variantsStore'])->name('product.variants.store');
 
     });
