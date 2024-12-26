@@ -28,4 +28,32 @@ class WebProductController extends Controller
         }
       
     }
+    public function viewProductDetails(Request $request)
+    {
+        try {
+            $product = Product::where('id', $request->id)->with('variants')->first();
+            
+            if ($product) {
+                if ($product->image) {
+                    $product->image = url(Storage::url($product->image)); 
+                }
+    
+                if ($product->variants) {
+                    foreach ($product->variants as $variant) {
+                        if ($variant->image) {
+                            $variant->image = url(Storage::url($variant->image)); 
+                        }
+                    }
+                }
+    
+                return $this->returnSuccessResponse("Data Listed Successfully", $product);
+            } else {
+                return $this->returnFailedResponse("Data not found");
+            }
+        } catch (\Exception $e) {
+            return $this->returnFailedResponse("Error fetching product with variants: " . $e->getMessage());
+        }
+    }
+    
+
 }
