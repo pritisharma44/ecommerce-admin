@@ -15,4 +15,9 @@ class Product extends Model
         'discounted_price',
         'description',
         'image'
-    ];}
+    ];
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+}
