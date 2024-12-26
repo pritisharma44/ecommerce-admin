@@ -28,10 +28,10 @@ class WebProductController extends Controller
         }
       
     }
-    public function viewProductDetails(Request $request)
+    public function viewProductDetails($id)
     {
         try {
-            $product = Product::where('id', $request->id)->with('variants')->first();
+            $product = Product::where('id', $id)->with('variants')->first();
             
             if ($product) {
                 if ($product->image) {

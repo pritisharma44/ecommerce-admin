@@ -25,7 +25,7 @@ Route::post('register', [AuthController::class, 'register']);
 
 // Product Managemeent Routes
 Route::get('get-products', [WebProductController::class, 'getProducts']);
-Route::get('view-product-details', [WebProductController::class, 'viewProductDetails']);
+Route::get('view-product-details/{id}', [WebProductController::class, 'viewProductDetails']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
