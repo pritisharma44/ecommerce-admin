@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\WebProductController;
+use App\Http\Controllers\Api\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,8 @@ Route::get('view-product-details/{id}', [WebProductController::class, 'viewProdu
 
 Route::middleware('auth:api')->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
+    Route::post('add-to-cart', [CartController::class, 'addToCart']);
+    Route::get('carts', [CartController::class, 'listCart']);
+    Route::delete('remove-cart/{id}', [CartController::class, 'removeFromCart']);
 });
+
